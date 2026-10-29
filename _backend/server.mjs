@@ -10,30 +10,36 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// 前端在仓库根目录（GitHub Pages 要求），后端在 _backend/
+const WEB_ROOT = path.resolve(__dirname, "..");
 
 /* ---------------- 读 .env ---------------- */
 function loadEnv() {
-  const p = path.join(__dirname, ".env");
-  if (!fs.existsSync(p)) return;
-  const txt = fs.readFileSync(p, "utf8");
-  for (const line of txt.split("\n")) {
-    const t = line.trim();
-    if (!t || t.startsWith("#")) continue;
-    const i = t.indexOf("=");
-    if (i < 0) continue;
-    const k = t.slice(0, i).trim();
-    let v = t.slice(i + 1).trim();
-    if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
-      v = v.slice(1, -1);
+  // 先找 _backend/.env，再找仓库根 .env
+  const candidates = [path.join(__dirname, ".env"), path.join(WEB_ROOT, ".env")];
+  for (const p of candidates) {
+    if (!fs.existsSync(p)) continue;
+    const txt = fs.readFileSync(p, "utf8");
+    for (const line of txt.split("\n")) {
+      const t = line.trim();
+      if (!t || t.startsWith("#")) continue;
+      const i = t.indexOf("=");
+      if (i < 0) continue;
+      const k = t.slice(0, i).trim();
+      let v = t.slice(i + 1).trim();
+      if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+        v = v.slice(1, -1);
+      }
+      if (!process.env[k]) process.env[k] = v;
     }
-    if (!process.env[k]) process.env[k] = v;
+    break;
   }
 }
 loadEnv();
 
 const PORT = Number(process.env.PORT || 5173);
 const API_KEY = process.env.DASHSCOPE_API_KEY || "";
-const MODEL = process.env.DASHSCOPE_MODEL || "qwen3-vl-plus";
+const MODEL = process.env.DASHSCOPE_MODEL || "qwen3.8-max";
 const BASE = process.env.DASHSCOPE_BASE_URL || "https://dashscope.aliyuncs.com/compatible-mode/v1";
 const LIMIT = Number(process.env.RATE_LIMIT || 30);
 const MOCK = process.env.MOCK === "1" || !API_KEY;
@@ -140,10 +146,13 @@ async function callModel(imageDataURL, selfScores) {
     ],
     temperature: 0.85,
     max_tokens: 2600,
+    // Qwen3.8 系列默认开启思考模式，会把单次调用从 3 秒拖到 25-50 秒。
+    // 这个任务不需要长链推理，关掉它。
+    enable_thinking: false,
   };
 
   const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 75000);
+  const timer = setTimeout(() => ctrl.abort(), 110000);
 
   let res;
   try {
@@ -390,8 +399,8 @@ const server = http.createServer(async (req, res) => {
   let rel = pathname === "/" ? "/index.html" : pathname;
   if (!path.extname(rel)) rel = "/index.html";
 
-  const filePath = path.join(__dirname, "public", rel);
-  const root = path.join(__dirname, "public");
+  const filePath = path.join(WEB_ROOT, rel);
+  const root = WEB_ROOT;
 
   if (!filePath.startsWith(root)) {
     res.writeHead(403);

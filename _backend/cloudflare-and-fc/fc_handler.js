@@ -5,7 +5,7 @@
  *
  * 环境变量（在 FC 控制台配置）：
  *   DASHSCOPE_API_KEY   必填
- *   DASHSCOPE_MODEL     选填，默认 qwen3-vl-plus
+ *   DASHSCOPE_MODEL     选填，默认 qwen3.8-max
  *   ALLOW_ORIGIN        选填，默认 *（建议改成你的 GitHub Pages 域名）
  */
 const DASHSCOPE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions";
@@ -180,7 +180,7 @@ exports.handler = async (req, resp) => {
   }
 
   const API_KEY = process.env.DASHSCOPE_API_KEY || "";
-  const MODEL = process.env.DASHSCOPE_MODEL || "qwen3-vl-plus";
+  const MODEL = process.env.DASHSCOPE_MODEL || "qwen3.8-max";
 
   if (!API_KEY) {
     reply(500, { error: "服务端没有配置 DASHSCOPE_API_KEY。" });
@@ -233,6 +233,7 @@ exports.handler = async (req, resp) => {
         ],
         temperature: 0.85,
         max_tokens: 2600,
+        enable_thinking: false,
       }),
     });
 

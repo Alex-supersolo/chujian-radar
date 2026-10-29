@@ -2,7 +2,7 @@
 
 > **一句话**：上传照片 + 七题自评 → 看见「陌生人在 3 秒内对你下的 7 个判断」，以及你理解的自己和别人读到的你之间那道落差。
 
-![](https://img.shields.io/badge/AI-qwen3--vl--plus-blue) ![](https://img.shields.io/badge/deploy-GitHub%20Pages-green) ![](https://img.shields.io/badge/license-MIT-orange)
+![](https://img.shields.io/badge/AI-qwen3.8--max-blue) ![](https://img.shields.io/badge/deploy-GitHub%20Pages-green) ![](https://img.shields.io/badge/license-MIT-orange)
 
 **在线演示（演示模式，不调用 AI）**：https://alex-supersolo.github.io/chujian-radar/
 
@@ -53,7 +53,7 @@ node _backend/server.mjs
 **拿 API Key**：
 1. 打开 https://bailian.console.aliyun.com/ （需实名认证）
 2. 左侧「API-KEY 管理」→ 创建，复制 \`sk-xxxxx\`
-3. 左侧「模型广场」→ 搜 \`qwen3-vl-plus\` → 点「开通」
+3. 左侧「模型广场」→ 搜 `qwen3.8-max` → 点「开通」
 
 ### 部署到线上（免费）
 
@@ -70,7 +70,7 @@ node _backend/server.mjs
 | **前端** | 纯 HTML/CSS/JS，无框架，hash 路由 |
 | **后端** | Node.js 本地开发服务器 |
 | **生产 API** | Cloudflare Worker / 阿里云函数计算 |
-| **AI 模型** | 通义千问 qwen3-vl-plus 多模态视觉模型 |
+| **AI 模型** | 通义千问 qwen3.8-max 旗舰多模态模型 |
 | **部署** | GitHub Pages（前端） + Worker/FC（API） |
 
 **为什么分两层**：GitHub Pages 只能托管静态文件，任何写进前端代码的 API Key 都会暴露。Worker/FC 把 Key 藏在服务端环境变量里。

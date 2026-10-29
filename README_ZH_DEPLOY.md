@@ -14,7 +14,7 @@
 
 1. 打开 https://bailian.console.aliyun.com/
 2. 左侧「API-KEY 管理」→ 创建，复制 `sk-xxxxx`
-3. 左侧「模型广场」→ 搜 `qwen3-vl-plus` → 点「开通」（必须开通，否则调用会报 403）
+3. 左侧「模型广场」→ 搜 `qwen3.8-max` → 点「开通」（必须开通，否则调用会报 403）
 
 ---
 
@@ -111,11 +111,11 @@ gh api -X POST "repos/你的用户名/chujian-radar/pages" -f source[branch]=mai
 
 ### 2. Worker 报 403 Access denied？
 
-**原因**：模型 `qwen3-vl-plus` 没开通。
+**原因**：模型 `qwen3.8-max` 没开通。
 
 **解法**：
 1. 打开 https://bailian.console.aliyun.com/
-2. 左侧「模型广场」→ 搜 `qwen3-vl-plus` → 点「开通」
+2. 左侧「模型广场」→ 搜 `qwen3.8-max` → 点「开通」
 3. 等几分钟，再试一次
 
 ### 3. Worker 报 401 Unauthorized？
@@ -146,7 +146,7 @@ gh api -X POST "repos/你的用户名/chujian-radar/pages" -f source[branch]=mai
 |---|---|---|
 | **GitHub Pages** | 100 GB 流量/月 | 够用 |
 | **Cloudflare Worker** | 每天 10 万次请求 | 够用 |
-| **阿里云 qwen3-vl-plus** | 按量付费，约 ¥0.008/次 | 1000 次约 ¥8 |
+| **阿里云 qwen3.8-max** | 按量付费，约 ¥0.008/次 | 1000 次约 ¥8 |
 
 **结论**：部署免费，AI 调用才花钱。测试阶段几块钱够了。
 
@@ -187,7 +187,7 @@ resources:
       timeout: 60
       environmentVariables:
         DASHSCOPE_API_KEY: ${env(DASHSCOPE_API_KEY)}
-        DASHSCOPE_MODEL: qwen3-vl-plus
+        DASHSCOPE_MODEL: qwen3.8-max
         ALLOW_ORIGIN: "*"
       triggers:
         - triggerType: http

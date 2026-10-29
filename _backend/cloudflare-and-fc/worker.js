@@ -124,7 +124,7 @@ function sanitize(j) {
 
 async function handleAnalyze(request, env) {
   const API_KEY = env.DASHSCOPE_API_KEY;
-  const MODEL = env.DASHSCOPE_MODEL || "qwen3-vl-plus";
+  const MODEL = env.DASHSCOPE_MODEL || "qwen3.8-max";
 
   if (!API_KEY) throw Object.assign(new Error("服务端没有配置 DASHSCOPE_API_KEY。"), { code: 500 });
 
@@ -157,6 +157,8 @@ async function handleAnalyze(request, env) {
       ],
       temperature: 0.85,
       max_tokens: 2600,
+      // 关闭思考模式：qwen3.8 默认开启时单次调用要 30-50 秒
+      enable_thinking: false,
     }),
   });
 

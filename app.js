@@ -242,12 +242,15 @@
   }
 
   /* ---------------- 分析流程 ---------------- */
+  // 步骤节奏按 qwen3.8-max 约 35-45 秒的真实耗时设计，最后一步留在「生成」态等结果
   const LOAD_STEPS = [
     "正在定位面部焦点区域",
     "正在测量眉骨与眼窝的阴影关系",
     "正在读取唇线在不笑时的张力",
+    "正在判断下颌线与面部留白",
+    "正在还原陌生人的第一眼路径",
     "正在对照你的七项自评",
-    "正在生成七维读数",
+    "正在生成七维读数与落差",
   ];
 
   async function startAnalysis() {
@@ -271,10 +274,10 @@
             (t, i) => `<div class="log-row" data-i="${i}"><span class="dot"></span><span>${t}</span></div>`
           ).join("")}
         </div>
-        <p class="loading-note" id="note">大约 10 秒</p>
+        <p class="loading-note" id="note">大约 30 秒，它在逐条读你的脸，别急</p>
       </div>`;
 
-    // 仪式感：逐步点亮（不阻塞真实请求）
+    // 仪式感：逐步点亮（不阻塞真实请求）。节奏按真实耗时放慢。
     const rows = app.querySelectorAll(".log-row");
     let idx = 0;
     const stepTimer = setInterval(() => {
@@ -285,9 +288,9 @@
       } else {
         clearInterval(stepTimer);
         const note = app.querySelector("#note");
-        if (note) note.textContent = "还在推演，越到后面越慢";
+        if (note) note.textContent = "快好了，正在把读数写成人话";
       }
-    }, 1200);
+    }, 4800);
 
     try {
       const result = await callAPI(S.photoData, S.selfScores);
