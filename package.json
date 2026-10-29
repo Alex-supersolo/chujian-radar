@@ -5,7 +5,7 @@
   "type": "module",
   "description": "初见雷达 - 你给陌生人的第一印象",
   "scripts": {
-    "start": "node server.mjs",
-    "demo": "MOCK=1 node server.mjs"
+    "start": "node _backend/server.mjs",
+    "demo": "MOCK=1 node _backend/server.mjs"
   }
 }

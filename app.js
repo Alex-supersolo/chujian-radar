@@ -7,6 +7,7 @@
   const QUESTIONS = window.QUESTIONS;
   const OPTIONS = window.OPTIONS;
   const CFG = window.CJLD_CONFIG || {};
+  const lifecycle = {id:0};
 
   const S = {
     photoFile: null,
@@ -29,6 +30,7 @@
     else routes["/"]();
   }
   window.addEventListener("hashchange", () => {
+    lifecycle.id++;
     route();
     window.scrollTo(0, 0);
   });
@@ -42,9 +44,9 @@
           你永远看不到<br>的那 <em>3 秒</em>
         </h1>
         <p class="hero-sub">
-          陌生人在见到你的第一瞬间，就对你下了七个判断。<br>
-          他不知道自己在判断，你也不会知道被判断成了什么。<br>
-          这个工具负责把那 3 秒翻译出来，<strong>包括那些你完全没料到的地方</strong>。
+          一张照片，会传递怎样的视觉印象？<br>
+          用七道自评与 AI 照片风格分析，看看两种视角的差异。<br>
+          <strong>光线、表情和造型的一点变化，也能带来新鲜的自己。</strong>
         </p>
 
         ${
@@ -52,7 +54,7 @@
             ? `<div class="preview-wrap">
                  <div class="preview-frame"><img src="${S.photoURL}" alt="你的照片"></div>
                  <div class="preview-meta">
-                   <span>照片只在内存中处理，不上传、不保存</span>
+                   <span>照片经服务端发送至千问；本站不主动保存照片</span>
                    <button class="link-btn" id="rePick">换一张</button>
                  </div>
                </div>`
@@ -65,7 +67,7 @@
                  <div class="uploader-title">放一张正面照</div>
                  <div class="uploader-hint">
                    点这里选择照片，或直接把图片拖进来<br>
-                   光线均匀、能看清五官、别戴墨镜 — 这样读出来才准
+                   光线均匀、能看清五官、别戴墨镜 — 方便分析照片风格
                  </div>
                  <input type="file" id="fileInput" accept="image/*">
                </div>`
@@ -80,8 +82,8 @@
           <h2 class="sec-title">它是怎么算的</h2>
         </div>
         <p class="sec-sub" style="margin-bottom:0">
-          七道题拿到「你理解的自己」，视觉模型拿到「别人读到的你」——
-          两份读数叠在一起，错位越大的地方，落差指数越高。
+          七道题拿到「你理解的自己」，视觉模型拿到「照片呈现」——
+          两份读数叠在一起，差异越大的地方，风格差异值越高。
         </p>
       </section>
     `;
@@ -194,6 +196,7 @@
   }
 
   async function handleFile(file) {
+    if (file.size > 20 * 1024 * 1024) { alert("请选择小于 20MB 的照片。"); return; }
     if (!file.type.startsWith("image/")) {
       alert("请选择一张图片。");
       return;
@@ -245,10 +248,10 @@
   // 步骤节奏按 qwen3.8-max 约 35-45 秒的真实耗时设计，最后一步留在「生成」态等结果
   const LOAD_STEPS = [
     "正在定位面部焦点区域",
-    "正在测量眉骨与眼窝的阴影关系",
-    "正在读取唇线在不笑时的张力",
-    "正在判断下颌线与面部留白",
-    "正在还原陌生人的第一眼路径",
+    "正在分析照片光线与构图",
+    "正在观察照片中的表情",
+    "正在观察服饰与色彩",
+    "正在整理视觉风格建议",
     "正在对照你的七项自评",
     "正在生成七维读数与落差",
   ];
@@ -258,6 +261,7 @@
     if (!S.photoData) { alert("先选一张照片。"); return; }
     if (Object.keys(S.answers).length < 7) return;
 
+    const requestId = lifecycle.id;
     S.busy = true;
     S.selfScores = {};
     DIMS.forEach((d) => (S.selfScores[d.key] = S.answers[d.key] || 50));
@@ -274,7 +278,7 @@
             (t, i) => `<div class="log-row" data-i="${i}"><span class="dot"></span><span>${t}</span></div>`
           ).join("")}
         </div>
-        <p class="loading-note" id="note">大约 30 秒，它在逐条读你的脸，别急</p>
+        <p class="loading-note" id="note">通常需要 30–60 秒，正在生成照片风格报告</p>
       </div>`;
 
     // 仪式感：逐步点亮（不阻塞真实请求）。节奏按真实耗时放慢。
@@ -300,6 +304,7 @@
         r.classList.add("done");
       });
 
+      if (requestId !== lifecycle.id) { S.busy = false; return; }
       S.report = result;
       S.gap = window.computeGap(result.scores, S.selfScores);
       S.busy = false;
@@ -308,7 +313,7 @@
     } catch (e) {
       clearInterval(stepTimer);
       S.busy = false;
-      renderError(e);
+      if (requestId === lifecycle.id) renderError(e);
     }
   }
 
@@ -322,12 +327,13 @@
     // 线上且没配代理 → 演示模式
     if (!url) {
       await sleep(1200);
-      return DEMO_REPORT;
+      throw new Error("分析服务尚未连接，请稍后再试。当前不会用示例报告替代真实分析。");
     }
 
     let res;
     try {
       res = await fetch(url, {
+        signal: AbortSignal.timeout(110000),
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: photoDataURL, selfScores }),
@@ -506,7 +512,7 @@
 
         <h2>两步</h2>
         <ul>
-          <li><b>七道自评题</b> → 你理解的自己。题目都写成具体行为，避免所有人都答成一个形状。</li>
+          <li><b>七道自评题</b> → 你理解的自己。题目都写成具体行为，避免回答更贴近自己的经验。</li>
           <li><b>一张照片</b> → 别人读到的你。由视觉模型给出七个维度的读数。</li>
         </ul>
         <p>两份读数叠在一起，错位的地方就是落差。<b>落差指数不由模型给，由公式算</b>，所以它是稳定、可复现的。</p>
@@ -534,7 +540,7 @@
         <h1>隐私</h1>
         <h2>照片去哪了</h2>
         <p>在浏览器里被压到长边 900px，转成 base64，直接发给你配置的分析代理，再转发给视觉模型。</p>
-        <p><b>不落盘、不入库、不写日志。</b>服务器处理完就丢掉了，没有留存的路径，也没有"删除"这个功能，因为从来没有存过。</p>
+        <p><b>本站不主动将照片落盘、入库或写入日志。</b>照片会发送至阿里云千问进行处理，模型供应商和云平台的数据处理与留存规则以其政策为准。</p>
 
         <h2>代理能看到什么</h2>
         <p>如果你用的是自己部署的代理（阿里云函数计算 / Cloudflare Worker），那只有你能看到 —— 代码在仓库里，Key 在你的环境变量里。</p>

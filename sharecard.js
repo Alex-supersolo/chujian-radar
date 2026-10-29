@@ -191,9 +191,10 @@
     // ---- 断言 ----
     ctx.textAlign = "left";
     ctx.font = `400 54px ${SERIF}`;
-    const hlLines = wrap(ctx, data.headline || "", W - 216);
+    let hlLines = wrap(ctx, data.headline || "", W - 216);
+    if (hlLines.length > 2) { ctx.font = `400 40px ${SERIF}`; hlLines = wrap(ctx, data.headline || "", W - 216); }
     let y = 300;
-    hlLines.slice(0, 4).forEach((ln) => {
+    hlLines.slice(0, 2).forEach((ln) => {
       ctx.fillStyle = /「|“/.test(ln) ? C.gold : C.ink;
       ctx.fillText(ln, 108, y);
       y += 76;
@@ -206,7 +207,7 @@
     ctx.font = `300 22px ${SANS}`;
     ctx.fillStyle = C.gold;
     ctx.letterSpacing = "4px";
-    ctx.fillText("落 差 指 数", 108, blockY + 8);
+    ctx.fillText("风 格 差 异", 108, blockY + 8);
     ctx.letterSpacing = "0px";
 
     ctx.font = `400 150px ${SERIF}`;
@@ -215,15 +216,15 @@
     const numW = ctx.measureText(String(gap)).width;
     ctx.font = `300 40px ${SERIF}`;
     ctx.fillStyle = "rgba(201,169,106,0.55)";
-    ctx.fillText("%", 104 + numW, blockY + 118);
+    ctx.fillText("/100", 104 + numW, blockY + 118);
 
     // 解释文案（折行）
     ctx.font = `300 24px ${SANS}`;
     ctx.fillStyle = C.ink2;
-    const expLines = wrap(ctx, "别人读到的你，和你理解的自己，\n" + (window.gapWord(gap) || ""), 340);
+    const expLines = wrap(ctx, "照片呈现，和你的自评，\n" + (window.gapWord(gap) || ""), 340);
     let ey = blockY + 195;
     expLines.slice(0, 4).forEach((ln) => {
-      ctx.fillStyle = ln.includes("你理解的自己") ? C.ink3 : C.ink2;
+      ctx.fillStyle = ln.includes("你的自评") ? C.ink3 : C.ink2;
       ctx.fillText(ln, 108, ey);
       ey += 38;
     });
@@ -237,7 +238,7 @@
     ctx.fillStyle = C.gold;
     ctx.fillRect(560, lgY - 7, 22, 3);
     ctx.fillStyle = C.ink2;
-    ctx.fillText("别人读到的你", 592, lgY);
+    ctx.fillText("照片呈现", 592, lgY);
     ctx.strokeStyle = C.blue;
     ctx.setLineDash([5, 4]);
     ctx.beginPath();
@@ -246,7 +247,7 @@
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.fillStyle = C.ink2;
-    ctx.fillText("你理解的自己", 804, lgY);
+    ctx.fillText("你的自评", 804, lgY);
 
     // ---- 标签 ----
     const tagY = blockY + 370;
@@ -291,7 +292,7 @@
     ctx.textAlign = "center";
     ctx.font = `300 22px ${SANS}`;
     ctx.fillStyle = C.ink3;
-    ctx.fillText("这是 AI 对「陌生人的第一眼读法」的模拟，不是对你的评价", W / 2, H - 118);
+    ctx.fillText("这是 AI 主观照片风格分析 · 不代表真实人格或他人判断", W / 2, H - 118);
 
     ctx.font = `400 26px ${SERIF}`;
     ctx.fillStyle = C.gold;

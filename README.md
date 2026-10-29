@@ -35,7 +35,7 @@
 
 ### 本地开发（5 分钟）
 
-\`\`\`bash
+```bash
 # 1. 克隆仓库
 git clone https://github.com/Alex-supersolo/chujian-radar.git
 cd chujian-radar
@@ -48,11 +48,11 @@ cp .env.example .env
 node _backend/server.mjs
 
 # 访问 http://localhost:5173
-\`\`\`
+```
 
 **拿 API Key**：
 1. 打开 https://bailian.console.aliyun.com/ （需实名认证）
-2. 左侧「API-KEY 管理」→ 创建，复制 \`sk-xxxxx\`
+2. 左侧「API-KEY 管理」→ 创建，复制 `sk-xxxxx`
 3. 左侧「模型广场」→ 搜 `qwen3.8-max` → 点「开通」
 
 ### 部署到线上（免费）

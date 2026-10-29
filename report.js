@@ -21,7 +21,7 @@
       .replace(/"/g, "&quot;");
   }
 
-  /* 落差指数：确定性计算，不由模型给 */
+  /* 风格差异值：确定性计算，不由模型给 */
   window.computeGap = function (otherScores, selfScores) {
     const ds = DIMS.map((d) =>
       Math.abs((otherScores[d.key] ?? 50) - (selfScores[d.key] ?? 50))
@@ -29,48 +29,11 @@
     const avg = ds.reduce((a, b) => a + b, 0) / ds.length;
     const max = Math.max.apply(null, ds);
     const gap = Math.round(avg * 2.2 + max * 0.6);
-    return clamp(gap, 8, 94);
+    return clamp(gap, 0, 100);
   };
 
-  window.gapWord = function (gap) {
-    if (gap >= 80) return "几乎住在两个不同的人身上";
-    if (gap >= 65) return "隔着一层很厚的雾";
-    if (gap >= 50) return "有相当一段是错位的";
-    if (gap >= 35) return "大体吻合，但有几处走偏";
-    if (gap >= 20) return "基本贴着，只有一两处缝";
-    return "你对自己的判断准得罕见";
-  };
-
-  /* 系统性偏差：他人读数整体高于还是低于自评 */
-  window.biasInfo = function (otherScores, selfScores) {
-    const d = DIMS.map((x) => (otherScores[x.key] ?? 50) - (selfScores[x.key] ?? 50));
-    const mean = d.reduce((a, b) => a + b, 0) / d.length;
-    if (Math.abs(mean) < 5) {
-      return {
-        type: "flat",
-        title: "你对自己的判断相当准",
-        body:
-          "大多数人会系统性地高估或低估自己，你没有。这意味着你在别人面前呈现的样子，和你以为的样子基本一致——" +
-          "这本身是稀缺能力，它让你不需要在社交里反复自我校正。",
-      };
-    }
-    if (mean > 0) {
-      return {
-        type: "under",
-        title: "你比他以为的更该自信",
-        body:
-          "七个维度上，别人的读数整体高于你给自己的分数。也就是说，你在心里给自己打的分，比陌生人打完折之后还低。" +
-          "你不是不够好，你是有点久没听见真话了。",
-      };
-    }
-    return {
-      type: "over",
-      title: "你在心里给自己多加了几分",
-      body:
-        "别人的读数整体低于你的自评。这不一定是坏事——你对自己的要求本来就比别人看你更严。" +
-          "但值得知道：你身上那些你觉得「显而易见」的东西，别人其实没接收到。",
-    };
-  };
+  window.gapWord = function(gap) { return gap >= 50 ? '在这张照片中呈现出较大的风格差异' : '在这张照片中呈现得比较接近'; };
+  window.biasInfo = function() { return {title:'同一个人，可以有不同的照片表达',body:'差异值只比较 AI 的主观照片风格读数与自评，不代表认知偏差或他人的真实判断。数值没有高低优劣。'}; };
 
   function bar(label, val, cls, delay) {
     return `
@@ -147,10 +110,10 @@
         <div class="gap-block fade-up">
           <div class="gap-num-wrap">
             <div class="gap-label">落差指数</div>
-            <div class="gap-num num" id="gapNum">0<small>%</small></div>
+            <div class="gap-num num" id="gapNum">0<small>/100</small></div>
           </div>
           <p class="gap-desc">
-            别人读到的你，和你理解的自己，<span>${esc(window.gapWord(gap))}。</span>
+            照片呈现，和你的自评，<span>${esc(window.gapWord(gap))}。</span>
           </p>
         </div>
 
@@ -163,7 +126,7 @@
           <span class="sec-idx">01</span>
           <h2 class="sec-title">两种视角的形状</h2>
         </div>
-        <p class="sec-sub">金色是陌生人三秒内做出的判断，蓝色是你以为的自己。形状错位的地方，就是别人误读你的地方。</p>
+        <p class="sec-sub">金色是 AI 对这张照片呈现效果的主观描述，蓝色是你的自评。差异不代表别人真实的看法。</p>
 
         <div class="radar-card">
           <div id="radarHost"></div>
@@ -184,7 +147,7 @@
           <span class="sec-idx">02</span>
           <h2 class="sec-title">七个维度，逐条</h2>
         </div>
-        <p class="sec-sub">每一条都写成「陌生人会怎么做」，而不是「你是什么样的人」。你可以不同意，但你会认得出来。</p>
+        <p class="sec-sub">每一条都写成「陌生人会怎么做」，而不是「你是什么样的人」。结果受光线、表情和拍摄方式影响。</p>
         <div>${dimHtml}</div>
       </section>
 
@@ -246,7 +209,7 @@
           ? `<section class="sec">
               <div class="sec-head">
                 <span class="sec-idx">05</span>
-                <h2 class="sec-title">三个不用动刀的调整</h2>
+                <h2 class="sec-title">三个今天可试的调整</h2>
               </div>
               <p class="sec-sub">全部当天可做、零成本。不改你的脸，只改别人读你的那 3 秒。</p>
               <div>${tweakHtml}</div>
@@ -272,7 +235,7 @@
 
       <p class="disclaimer">
         这份报告是对「陌生人的第一眼读法」的模拟，不是对你的评价。<br>
-        它描述的是偏见如何工作，不是你是谁。
+        这是主观照片风格分析，不代表真实人格或他人的实际判断。
       </p>
     </div>`;
   };
