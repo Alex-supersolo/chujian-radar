@@ -44,9 +44,9 @@
           你永远看不到<br>的那 <em>3 秒</em>
         </h1>
         <p class="hero-sub">
-          一张照片，会传递怎样的视觉印象？<br>
-          用七道自评与 AI 照片风格分析，看看两种视角的差异。<br>
-          <strong>光线、表情和造型的一点变化，也能带来新鲜的自己。</strong>
+          陌生人见到你 3 秒，会先把你归到哪一类？<br>
+          AI 结合照片与真实社交场景，模拟你的第一眼社交印象。<br>
+          <strong>测完你会知道：别人为什么这样想，以及怎么打开局面。</strong>
         </p>
 
         ${
@@ -54,7 +54,7 @@
             ? `<div class="preview-wrap">
                  <div class="preview-frame"><img src="${S.photoURL}" alt="你的照片"></div>
                  <div class="preview-meta">
-                   <span>照片经服务端发送至千问；本站不主动保存照片</span>
+                   <span>照片仅用于本次分析；本站不主动保存</span>
                    <button class="link-btn" id="rePick">换一张</button>
                  </div>
                </div>`
@@ -67,7 +67,7 @@
                  <div class="uploader-title">放一张正面照</div>
                  <div class="uploader-hint">
                    点这里选择照片，或直接把图片拖进来<br>
-                   光线均匀、能看清五官、别戴墨镜 — 方便分析照片风格
+                   单人正面照即可；表情自然，方便模拟第一眼
                  </div>
                  <input type="file" id="fileInput" accept="image/*">
                </div>`
@@ -82,8 +82,8 @@
           <h2 class="sec-title">它是怎么算的</h2>
         </div>
         <p class="sec-sub" style="margin-bottom:0">
-          七道题拿到「你理解的自己」，视觉模型拿到「照片呈现」——
-          两份读数叠在一起，差异越大的地方，风格差异值越高。
+          七道题拿到「你了解的自己」，AI 模拟「陌生人第一眼的归类」——
+          两份读数叠在一起，最不一致的地方，就是你最容易被误会的地方。
         </p>
       </section>
     `;
@@ -101,10 +101,10 @@
     return `
       <div class="step-label">
         <span class="n">02 / 02</span>
-        <span class="t">先说说你以为的自己</span>
+        <span class="t">再回答 7 个真实社交场景</span>
       </div>
       <p class="hero-sub" style="font-size:14px;margin-bottom:0">
-        七道题，凭直觉点。不要选「应该是这样」的那个。
+        按你平时真实的反应来选，不要选“理想中的自己”。
       </p>
 
       <div class="qlist">
@@ -125,7 +125,7 @@
 
       <div class="action-bar">
         <button class="btn btn-primary btn-wide" id="btnGo" ${done < 7 ? "disabled" : ""}>
-          ${done < 7 ? `还剩 ${7 - done} 题` : "看陌生人对你的第一判断"}
+          ${done < 7 ? `还剩 ${7 - done} 题` : "看看陌生人会先怎么理解你"}
         </button>
       </div>`;
   }
@@ -145,7 +145,7 @@
           const n = Object.keys(S.answers).length;
           if (go) {
             go.disabled = n < 7;
-            go.textContent = n < 7 ? `还剩 ${7 - n} 题` : "看陌生人对你的第一判断";
+            go.textContent = n < 7 ? `还剩 ${7 - n} 题` : "看看陌生人会先怎么理解你";
           }
           // 答满自动滚到按钮
           if (n === 7) {
@@ -248,12 +248,12 @@
   // 步骤节奏按 qwen3.8-max 约 35-45 秒的真实耗时设计，最后一步留在「生成」态等结果
   const LOAD_STEPS = [
     "正在定位面部焦点区域",
-    "正在分析照片光线与构图",
-    "正在观察照片中的表情",
-    "正在观察服饰与色彩",
-    "正在整理视觉风格建议",
+    "正在抓取第一眼会注意到的信号",
+    "正在模拟陌生人的第一反应",
+    "正在匹配你的社交场景",
+    "正在寻找最容易被误会的地方",
     "正在对照你的七项自评",
-    "正在生成七维读数与落差",
+    "正在生成你的第一印象画像",
   ];
 
   async function startAnalysis() {
@@ -278,7 +278,7 @@
             (t, i) => `<div class="log-row" data-i="${i}"><span class="dot"></span><span>${t}</span></div>`
           ).join("")}
         </div>
-        <p class="loading-note" id="note">通常需要 30–60 秒，正在生成照片风格报告</p>
+        <p class="loading-note" id="note">通常需要 30–60 秒，正在模拟陌生人的第一眼</p>
       </div>`;
 
     // 仪式感：逐步点亮（不阻塞真实请求）。节奏按真实耗时放慢。
@@ -377,8 +377,12 @@
     const arr = (a, n) => (Array.isArray(a) ? a.filter((x) => typeof x === "string" && x.trim()).slice(0, n) : []);
 
     return {
-      headline: String(j.headline || "你以为是「随便看看」，别人读成「不太好接近」").slice(0, 90),
+      headline: String(j.headline || "第一眼有点神秘，聊两句就暴露了你的好相处").slice(0, 90),
       tags: arr(j.tags, 3),
+      typeName: String(j.typeName || "慢热但有记忆点").slice(0, 60),
+      typeDesc: String(j.typeDesc || "你不一定是最先开口的人，但熟起来之后，别人通常会记住你。").slice(0, 240),
+      firstThought: String(j.firstThought || j.projection || "看起来有一点距离，但不像难相处。等你开口之后，别人会很快重新判断你。").slice(0, 360),
+      misread: String(j.misread || "我本来以为你不太想聊，后来发现你只是还没进入状态。").slice(0, 220),
       evidence: arr(j.evidence, 4),
       projection: String(j.projection || "").slice(0, 600),
       gain: String(j.gain || "").slice(0, 300),
@@ -399,7 +403,8 @@
             why: String(t.why || "").slice(0, 240),
           }))
         : [],
-      closing: String(j.closing || "").slice(0, 120),
+      closing: String(j.closing || "你不需要立刻让所有人喜欢你，只要让对的人有机会认识你。").slice(0, 120),
+      shareCaption: String(j.shareCaption || "原来我不是高冷，是开机比较慢。").slice(0, 100),
     };
   }
 

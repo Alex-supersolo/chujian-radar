@@ -1,30 +1,27 @@
-/* 七个维度 + 七道自评题
- * 题目刻意写成「具体行为 / 别人的反应」，而不是「你觉得自己 xx 吗」，
- * 这样自评不会全部挤在中间，落差才有意义。
- */
+/* 初见雷达：不是测美丑，而是模拟陌生人对你的第一眼归类。 */
 window.DIMS = [
-  { key: "trust",     name: "端正感", hi: "别人愿意托付",     lo: "信任要慢慢攒" },
-  { key: "warmth",    name: "表情柔和度", hi: "陌生人愿意搭话",   lo: "破冰成本高" },
-  { key: "edge",      name: "视觉锐度", hi: "有锋芒，不被轻视", lo: "容易被当成软柿子" },
-  { key: "presence",  name: "气场",   hi: "进门会被注意",     lo: "需要主动争取存在感" },
-  { key: "composure", name: "松弛感", hi: "待在一起很舒服",   lo: "容易被读成紧绷" },
-  { key: "memory",    name: "记忆点", hi: "见一面就被记住",   lo: "容易看完就忘" },
-  { key: "clarity",   name: "正式感", hi: "一开口别人安静",   lo: "要靠内容证明自己" },
+  { key: "distance", name: "距离感", hi: "让人想靠近", lo: "需要一个开场信号" },
+  { key: "warmth", name: "亲和力", hi: "容易接上话", lo: "熟了以后更明显" },
+  { key: "trust", name: "靠谱感", hi: "像是能把事交给你", lo: "要靠相处建立" },
+  { key: "presence", name: "存在感", hi: "进场就会被注意", lo: "容易先观察再发光" },
+  { key: "chat", name: "好聊感", hi: "别人愿意继续聊", lo: "需要找到共同话题" },
+  { key: "memory", name: "记忆点", hi: "见过一次也记得", lo: "相处后才显出来" },
+  { key: "boundary", name: "边界感", hi: "分寸舒服", lo: "容易被试探距离" },
 ];
 
 window.QUESTIONS = [
-  { dim: "trust",     text: "我平时选择的照片，画面通常干净、端正。" },
-  { dim: "warmth",    text: "我拍照时，表情通常柔和、自然。" },
-  { dim: "edge",      text: "我偏好线条鲜明、对比强烈的造型。" },
-  { dim: "presence",  text: "我喜欢在照片里成为视觉焦点。" },
-  { dim: "composure", text: "我拍照时，肩颈和姿态通常比较放松。" },
-  { dim: "memory",    text: "我的照片通常有鲜明的配色或造型特点。" },
-  { dim: "clarity",   text: "我平时选择的照片，着装和场景通常偏正式。" },
+  { dim: "distance", text: "第一次进一个全是陌生人的群聊，你通常会先看一会儿，再决定要不要说话。" },
+  { dim: "warmth", text: "聚会冷场时，你能自然地接一句话，让场子重新动起来。" },
+  { dim: "trust", text: "第一次合作，别人常常会直接把具体的事交代给你，而不是只让你旁听。" },
+  { dim: "presence", text: "你走进饭局、会议室或教室时，通常会有人抬头看你一眼。" },
+  { dim: "chat", text: "刚认识的人聊不到三句，就会开始跟你说自己的近况或小秘密。" },
+  { dim: "memory", text: "只见过一次的人，下一次还能记得你，或者主动叫出你的名字。" },
+  { dim: "boundary", text: "第一次见面时，你很少为了让大家喜欢自己而过度解释或迎合。" },
 ];
 
 window.OPTIONS = [
-  { label: "完全不像我", value: 30 },
-  { label: "偶尔",       value: 50 },
-  { label: "挺常见",     value: 70 },
-  { label: "就是我",     value: 88 },
+  { label: "完全不像", value: 30 },
+  { label: "偶尔会", value: 50 },
+  { label: "经常是", value: 70 },
+  { label: "太像了", value: 88 },
 ];

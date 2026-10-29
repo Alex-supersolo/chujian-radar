@@ -207,7 +207,7 @@
     ctx.font = `300 22px ${SANS}`;
     ctx.fillStyle = C.gold;
     ctx.letterSpacing = "4px";
-    ctx.fillText("风 格 差 异", 108, blockY + 8);
+    ctx.fillText("第 一 印 象 落 差", 108, blockY + 8);
     ctx.letterSpacing = "0px";
 
     ctx.font = `400 150px ${SERIF}`;
@@ -221,10 +221,10 @@
     // 解释文案（折行）
     ctx.font = `300 24px ${SANS}`;
     ctx.fillStyle = C.ink2;
-    const expLines = wrap(ctx, "照片呈现，和你的自评，\n" + (window.gapWord(gap) || ""), 340);
+    const expLines = wrap(ctx, "陌生人先看到的你，和你理解的自己，\n" + (window.gapWord(gap) || ""), 340);
     let ey = blockY + 195;
     expLines.slice(0, 4).forEach((ln) => {
-      ctx.fillStyle = ln.includes("你的自评") ? C.ink3 : C.ink2;
+      ctx.fillStyle = ln.includes("你理解的自己") ? C.ink3 : C.ink2;
       ctx.fillText(ln, 108, ey);
       ey += 38;
     });
@@ -238,7 +238,7 @@
     ctx.fillStyle = C.gold;
     ctx.fillRect(560, lgY - 7, 22, 3);
     ctx.fillStyle = C.ink2;
-    ctx.fillText("照片呈现", 592, lgY);
+    ctx.fillText("陌生人第一眼", 592, lgY);
     ctx.strokeStyle = C.blue;
     ctx.setLineDash([5, 4]);
     ctx.beginPath();
@@ -280,7 +280,8 @@
 
     ctx.font = `400 40px ${SERIF}`;
     ctx.textAlign = "center";
-    const cLines = wrap(ctx, data.closing || "", W - 320);
+    const closeText = data.shareCaption || data.closing || "原来我不是高冷，是开机比较慢。";
+    const cLines = wrap(ctx, closeText, W - 320);
     let cyy = closeY + 100 - (cLines.length - 1) * 28;
     cLines.slice(0, 3).forEach((ln) => {
       ctx.fillStyle = C.ink;
@@ -292,7 +293,7 @@
     ctx.textAlign = "center";
     ctx.font = `300 22px ${SANS}`;
     ctx.fillStyle = C.ink3;
-    ctx.fillText("这是 AI 主观照片风格分析 · 不代表真实人格或他人判断", W / 2, H - 118);
+    ctx.fillText("这是 AI 对你第一印象的娱乐性模拟 · 不代表真实想法", W / 2, H - 118);
 
     ctx.font = `400 26px ${SERIF}`;
     ctx.fillStyle = C.gold;
