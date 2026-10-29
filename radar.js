@@ -59,7 +59,7 @@
         el("polygon", {
           points: pts,
           fill: "none",
-          stroke: idx === 3 ? "rgba(232,228,220,0.16)" : "rgba(232,228,220,0.07)",
+          stroke: idx === 3 ? "rgba(75,62,73,0.16)" : "rgba(75,62,73,0.08)",
           "stroke-width": 1,
         })
       );
@@ -71,7 +71,7 @@
       svg.appendChild(
         el("line", {
           x1: cx, y1: cy, x2: x, y2: y,
-          stroke: "rgba(232,228,220,0.07)",
+          stroke: "rgba(75,62,73,0.08)",
           "stroke-width": 1,
         })
       );
@@ -81,7 +81,7 @@
     const selfPoly = el("polygon", {
       points: polyStr(cx, cy, R, angles, self.map(() => 0)),
       fill: "none",
-      stroke: "#6E8BA3",
+      stroke: "#6D9CC8",
       "stroke-width": 1.4,
       "stroke-dasharray": "4 4",
       "stroke-linejoin": "round",
@@ -93,7 +93,7 @@
     const otherPoly = el("polygon", {
       points: polyStr(cx, cy, R, angles, other.map(() => 0)),
       fill: "rgba(201,169,106,0.16)",
-      stroke: "#C9A96A",
+      stroke: "#F26B5E",
       "stroke-width": 1.8,
       "stroke-linejoin": "round",
     });
@@ -103,7 +103,7 @@
     const dots = other.map(() => {
       const c = el("circle", {
         r: 2.6,
-        fill: "#C9A96A",
+        fill: "#F26B5E",
         cx: cx,
         cy: cy,
       });

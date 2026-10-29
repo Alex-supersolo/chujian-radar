@@ -41,7 +41,7 @@
       <section class="hero fade-in">
         <span class="eyebrow">FIRST IMPRESSION RADAR</span>
         <h1 class="hero-title">
-          你永远看不到<br>的那 <em>3 秒</em>
+          测测你给人的<br><em>第一印象</em>
         </h1>
         <p class="hero-sub">
           陌生人见到你 3 秒，会先把你归到哪一类？<br>

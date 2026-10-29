@@ -1,24 +1,24 @@
 /* ==========================================================
    初见雷达 · 样式
-   暗调杂志风：近黑底 + 暖白字 + 金（他人视角）/ 蓝（自我视角）
+   明亮轻盈风：奶油白底 + 珊瑚橙重点 + 雾蓝（自我视角）
    ========================================================== */
 
 :root {
-  --bg: #0A0A0B;
-  --bg-soft: #121213;
-  --bg-card: #161618;
-  --line: rgba(232, 228, 220, 0.10);
-  --line-soft: rgba(232, 228, 220, 0.06);
+  --bg: #FFF9F4;
+  --bg-soft: #FFF0E8;
+  --bg-card: #FFFFFF;
+  --line: rgba(75, 62, 73, 0.14);
+  --line-soft: rgba(75, 62, 73, 0.08);
 
-  --ink: #E8E4DC;
-  --ink-2: #A8A29A;
-  --ink-3: #6E6A64;
-  --ink-4: #47443F;
+  --ink: #2D2933;
+  --ink-2: #665F6B;
+  --ink-3: #938A97;
+  --ink-4: #B4AAB4;
 
-  --gold: #C9A96A;
-  --gold-dim: rgba(201, 169, 106, 0.16);
-  --blue: #6E8BA3;
-  --blue-dim: rgba(110, 139, 163, 0.14);
+  --gold: #F26B5E;
+  --gold-dim: rgba(242, 107, 94, 0.12);
+  --blue: #6D9CC8;
+  --blue-dim: rgba(109, 156, 200, 0.14);
   --warn: #B85C46;
 
   --serif: "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", "STSong", "SimSun", Georgia, serif;
@@ -75,7 +75,7 @@ main {
   padding: 20px var(--pad);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  background: linear-gradient(to bottom, rgba(10,10,11,0.92), rgba(10,10,11,0.72));
+  background: linear-gradient(to bottom, rgba(255,249,244,0.94), rgba(255,249,244,0.82));
   border-bottom: 1px solid var(--line-soft);
 }
 
@@ -152,7 +152,7 @@ main {
 
 .btn-primary {
   background: var(--gold);
-  color: #0A0A0B;
+  color: #FFFFFF;
   font-weight: 600;
 }
 .btn-primary:hover { background: #D9BC81; transform: translateY(-1px); }
@@ -164,7 +164,7 @@ main {
   color: var(--ink-2);
   border-color: var(--line);
 }
-.btn-ghost:hover { color: var(--ink); border-color: rgba(232,228,220,0.28); }
+.btn-ghost:hover { color: var(--ink); border-color: rgba(75,62,73,0.28); }
 
 .btn-wide { width: 100%; }
 
@@ -190,6 +190,7 @@ main {
   font-size: 15.5px;
   line-height: 1.85;
   max-width: 34em;
+  overflow-wrap: anywhere;
 }
 
 .hero-sub strong { color: var(--ink); font-weight: 500; }
@@ -199,7 +200,7 @@ main {
   margin: 40px 0 0;
   border: 1px dashed rgba(232,228,220,0.18);
   border-radius: 3px;
-  background: linear-gradient(180deg, rgba(22,22,24,0.9), rgba(18,18,19,0.55));
+  background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,240,232,0.68));
   padding: 40px 24px;
   text-align: center;
   cursor: pointer;
@@ -209,7 +210,7 @@ main {
 }
 .uploader:hover, .uploader.drag {
   border-color: rgba(201,169,106,0.55);
-  background: linear-gradient(180deg, rgba(26,25,21,0.95), rgba(18,18,19,0.6));
+  background: linear-gradient(180deg, rgba(255,235,230,0.95), rgba(18,18,19,0.6));
 }
 
 .uploader-icon {
@@ -576,7 +577,7 @@ main {
 .bar {
   position: relative;
   height: 3px;
-  background: rgba(232,228,220,0.07);
+  background: rgba(75,62,73,0.08);
   border-radius: 2px;
   margin-bottom: 7px;
   overflow: hidden;
@@ -820,7 +821,7 @@ main {
 .err-box code {
   font-family: ui-monospace, Menlo, monospace;
   font-size: 12px;
-  background: rgba(0,0,0,0.4);
+  background: rgba(45,41,51,0.08);
   padding: 2px 6px;
   border-radius: 2px;
   color: var(--gold);

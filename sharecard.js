@@ -4,14 +4,14 @@
 (function () {
   const W = 1080, H = 1440;
   const C = {
-    bg: "#0A0A0B",
-    bgCard: "#141416",
-    ink: "#E8E4DC",
-    ink2: "#A8A29A",
-    ink3: "#6E6A64",
-    gold: "#C9A96A",
-    blue: "#6E8BA3",
-    line: "rgba(232,228,220,0.13)",
+    bg: "#FFF9F4",
+    bgCard: "#FFFFFF",
+    ink: "#2D2933",
+    ink2: "#665F6B",
+    ink3: "#938A97",
+    gold: "#F26B5E",
+    blue: "#6D9CC8",
+    line: "rgba(75,62,73,0.13)",
   };
   const SERIF = '"Songti SC","Noto Serif CJK SC","Source Han Serif SC",Georgia,serif';
   const SANS = '"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif';
@@ -95,7 +95,7 @@
       i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
     });
     ctx.closePath();
-    ctx.fillStyle = "rgba(201,169,106,0.20)";
+    ctx.fillStyle = "rgba(242,107,94,0.20)";
     ctx.fill();
     ctx.strokeStyle = C.gold;
     ctx.lineWidth = 2.5;
@@ -132,8 +132,8 @@
 
     // 顶部金色微光
     const g = ctx.createRadialGradient(W * 0.5, -120, 0, W * 0.5, -120, 900);
-    g.addColorStop(0, "rgba(201,169,106,0.16)");
-    g.addColorStop(1, "rgba(201,169,106,0)");
+    g.addColorStop(0, "rgba(242,107,94,0.16)");
+    g.addColorStop(1, "rgba(242,107,94,0)");
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, 700);
 
@@ -215,7 +215,7 @@
     ctx.fillText(String(gap), 100, blockY + 145);
     const numW = ctx.measureText(String(gap)).width;
     ctx.font = `300 40px ${SERIF}`;
-    ctx.fillStyle = "rgba(201,169,106,0.55)";
+    ctx.fillStyle = "rgba(242,107,94,0.55)";
     ctx.fillText("/100", 104 + numW, blockY + 118);
 
     // 解释文案（折行）
@@ -257,9 +257,9 @@
       const w = ctx.measureText(t).width + 52;
       if (tx + w > W - 108) return;
       roundRect(ctx, tx, tagY, w, 54, 27);
-      ctx.fillStyle = "rgba(201,169,106,0.09)";
+      ctx.fillStyle = "rgba(242,107,94,0.09)";
       ctx.fill();
-      ctx.strokeStyle = "rgba(201,169,106,0.38)";
+      ctx.strokeStyle = "rgba(242,107,94,0.38)";
       ctx.lineWidth = 1.5;
       ctx.stroke();
       ctx.fillStyle = C.gold;
@@ -272,7 +272,7 @@
     // ---- 一句话 ----
     const closeY = tagY + 60;
     roundRect(ctx, 108, closeY, W - 216, 232, 3);
-    ctx.fillStyle = "rgba(255,255,255,0.02)";
+    ctx.fillStyle = "rgba(75,62,73,0.04)";
     ctx.fill();
     ctx.strokeStyle = C.line;
     ctx.lineWidth = 1.5;
