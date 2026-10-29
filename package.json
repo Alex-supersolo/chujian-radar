@@ -1,0 +1,11 @@
+{
+  "name": "chujian-radar",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "初见雷达 - 你给陌生人的第一印象",
+  "scripts": {
+    "start": "node server.mjs",
+    "demo": "MOCK=1 node server.mjs"
+  }
+}
