@@ -96,7 +96,7 @@ async function handleAnalyze(request, env) {
     self[k] = isFinite(v) ? Math.max(0, Math.min(100, v)) : 50;
   }
 
-  const res = await fetch(DASHSCOPE_URL, {
+  const res = await fetch((env.DASHSCOPE_BASE_URL || "https://dashscope.aliyuncs.com/compatible-mode/v1").replace(/\/$/, "") + "/chat/completions", {
     signal: AbortSignal.timeout(100000),
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: "Bearer " + API_KEY },
